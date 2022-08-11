@@ -1,3 +1,4 @@
+/*
 //変数宣言
 var playerList = new Array();
 
@@ -25,3 +26,4 @@ module.exports = Room;
 
 //山牌作成(仮)
 const CY = new Hai.createYamahai();
+*/
