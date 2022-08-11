@@ -3,7 +3,12 @@ const express = require("express"),
   http = require("http"),
   path = require("path"),
   routes = require("./routes"),
-  socketIO = require("socket.io");
+  socketIO = require("socket.io")
+  cookieSession = require("cookie-session"),
+  //cookieParser = require("cookie-parser")　cookie-sessionダメならこっち使う
+
+  Room = require("./public/javascripts/room.js") //将来的に複数部屋立てる時は書く場所と書き方変わる
+;
 
 //サーバ生成
 const app = express();
@@ -20,26 +25,27 @@ app.set("view engine", "ejs");
 //app.use(express.bodyParser());　express4では不要
 //app.use(express.methodOverride());　express4では不要
 //app.use(app.router);　express4では不要
+//app.use(cookieParser())　とりあえずcookie-session使ってみる
+app.use(cookieSession({
+  name: "session", //セッションの名前
+  secret: "gegegear", //暗号化文字列、なんでもOK
+  maxAge: 24 * 60 * 60 * 1000 // 24 hours
+}))
 app.use(express.static(path.join(__dirname, "public")));
 
 //ルーティング
 app.get("/", routes.title);
-app.get("/lobby", routes.lobby);
+app.post("/lobby", routes.lobby);
 
-//クライアントとのやり取り
-var playerId = 0;
-io.sockets.on("connection", function (socket) {
-  socket.handshake.playerId = playerId;
-  playerId++;
+//socket.io　クライアントとのやり取り
+io.sockets.on('connection', function (socket) {
 
-  socket.on("joinLobby", function (data) {
-    var Room = require("./public/javascripts/Room.js");
-    var playerList = Room.updatePlayerList(
-      { playerId: data.playerId },
-      { name: data.name }
-    );
-    socket.handshake.playerList = playerList;
-    io.sockets.emit("trnsLobby", { playerList: data.playerList });
+  socket.on('enterLobby', function(data){
+    var playerId = socket.id; //socket.idをプレイヤIDとして使用
+    var name = socket.request.session.name; //セッションに格納されている名前を読み込む
+    var playerList = Room.updatePlayerList(playerId,name);
+    socket.request.session.playerId = playerId; //セッションにプレイヤIDを格納
+    io.sockets.emit('updateLobby', playerList); //クライアントにプレイヤリストを渡す
   });
 
   socket.on("disconnect");
