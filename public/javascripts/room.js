@@ -1,28 +1,27 @@
 //変数宣言
-var playerList = new Array;
-
+var playerList = new Array();
 
 //playerクラスの呼び出し
-const PLAYER = require('./player').player;
-const HAI = require('./hai').hai;
+const PLAYER = require("./player").Player;
+const HAI = require("./hai").Hai;
 
 //ルームクラス
-class room{
-    constructor(room){
-        this.room = room;
-    }
+class Room {
+  constructor(room) {
+    this.room = room;
+  }
 }
 
 //playerListの更新を行う
-function updatePlayerList(playerId, playerName){
-    var i = playerList.length;
-    playerList[i] = new player.playerInfo;
+function updatePlayerList(playerId, playerName) {
+  var i = playerList.length;
+  playerList[i] = new player.playerInfo();
 
-    return playerList;
+  return playerList;
 }
 
 //roomクラスを外部に公開
-module.export = room;
+module.exports = Room;
 
 //山牌作成(仮)
-const CY = new hai.createYamahai();
+const CY = new Hai.createYamahai();
