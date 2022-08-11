@@ -34,7 +34,7 @@ app.use(cookieSession({
 app.use(express.static(path.join(__dirname, "public")));
 
 //ルーティング
-app.post("/", routes.title);
+app.get("/", routes.title);
 app.post("/lobby", routes.lobby);
 
 //socket.io　クライアントとのやり取り
