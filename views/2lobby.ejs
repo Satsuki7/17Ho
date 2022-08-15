@@ -12,7 +12,8 @@
         </style>
     </head>
 <body>
-<input id="playerName" type="text" value=<%= playerName %>>
+<p id='name'><%= name %></p>
+<p><%= session %></p>
     <div class="container-fluid vw-100 vh-100 " style="background-image:url('../images/mahjong1.jpg'); background-size:cover;">
         <div class="mx-auto w-75 mh-75 p-5 ">
             <div class="bg-light row py-3 my-2 ">
@@ -43,5 +44,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="js/client.js"></script>
+
+    <script> const socket =io();
+    // プレイヤーの入力した名前をejsから取得（ルーティングの際に直接セッションに格納できる？）
+    //var name = document.getElementById("name").value
+    //websocketサーバにプレイヤー名とルームIDを送信
+    socket.emit('enterLobby'); 
+    </script>
 </body>
 </html>

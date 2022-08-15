@@ -5,6 +5,7 @@ const express = require("express"),
   routes = require("./routes"),
   socketIO = require("socket.io"),
   cookieSession = require("cookie-session"),
+  bodyParser = require("body-parser"),
   //cookieParser = require("cookie-parser")　cookie-sessionダメならこっち使う
 
   Room = require("./public/javascripts/room.js"); //将来的に複数部屋立てる時は書く場所と書き方変わる
@@ -30,6 +31,8 @@ app.use(
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
   })
 );
+//postを取得するために必要
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
 //ルーティング
